@@ -104,18 +104,19 @@ int main(void){
     for (i = 0; i < nx; i++){
       fprintf(results, "%f %f %f %f %f %f \n", toctavos1[i], toctavos2[i], tcuartos1[i], tcuartos2[i], tmedios1[i], tmedios2[i]);
     }
+    fclose(results);
     //e imprimo las amplitudes de la parte media
-    for (j = 0; j < nt-2; j++){
-      printf("%f \n", amplitudes[j]);
-    }
+    //for (j = 0; j < nt-2; j++){
+      //printf("%f \n", amplitudes[j]);
+    //}
     //-------------------------------------------------
     //TAMBOR 2D
     //conservamos los valores de nt, dt, dx y r
-    float dy = dx;
     int N = 101; //cambiamos N al ser la matriz de NxN
     double * u_ini = malloc(N*N*sizeof(double));
     double * u = malloc(N*N*sizeof(double));
     double * u_new = malloc(N*N*sizeof(double));
+    double * u_old = malloc(N*N*sizeof(double));
     double * toctavos3 = malloc(N*N*sizeof(double));
     double * tcuartos3 = malloc(N*N*sizeof(double));
     double * tmedios3 = malloc(N*N*sizeof(double));
@@ -133,7 +134,36 @@ int main(void){
         }
       }
     }
-
+    //hago la condición inicial en el resto del cuadrado
+    for (i = 1; i < N-1; i++){
+      for (j = 1; j < N-1; j++){
+        u_new[i+N*j] = u_ini[i+N*j] +pow(r,2)*0.5*(u_ini[i+1+N*j] - 2*u_ini[i+N*j] + u_ini[i-1+N*j] + u_ini[i +N*(j+1)] -2*u_ini[i+N*j] + u_ini[i+N*(j-1)]);
+      }
+    }
+    //actualizo
+    for (i = 0; i < N*N; i++){
+      u_old[i] = u_ini[i];
+      u[i] = u_new[i];
+    }
+    //itero en tiempo
+    int k;
+    for(k = 1; k < nt-1; k++){
+      for (i = 1; i < N-1; i++){
+        for (j = 1; j < N-1; j++){
+          u_new[i+N*j] = 2*u[i+N*j]*(1-2*pow(r,2))-u_old[i+N*j] + pow(r,2)*(u[i+1+N*j] + u[i-1+N*j] + u[i+N*(j+1)] + u[i+N*(j-1)]);
+        }
+      }
+      //actualizo
+      int w;
+      for (w = 0; w < N*N; w++){
+        u_old[w] = u[w];
+        u[w] = u_new[w];
+      }
+      //printf("%f %d \n", u_new[5100], k); //y hallo una oscilación entera cuando j=
+    }
+    for(i = 0; i< N*N; i++){
+      printf("%f \n", u_new[i]);
+    }
 
 
 
