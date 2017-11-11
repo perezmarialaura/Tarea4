@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io.wavfile
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.mlab import bivariate_normal
+
 
 #GRÁFICAS DE LAS CUERDAS
 init_cuerda1 = np.genfromtxt("cond_ini_cuerda.dat")
@@ -42,20 +44,21 @@ plt.savefig("plots_cuerdasuelta.png")
 
 
 #GRÁFICAS DEL TAMBOR
-x0 = np.arange(0, 0.5, 0.5/101.)
-y0 = np.arange(-5, 0.5, 0.5/101.)
-z0 = np.empty(101*101)
+x0 = y0 = np.linspace(0, 0.5, 101)
 init_tambor = np.genfromtxt("cond_ini_tambor.dat", delimiter=" ")
-for i in range(101):
-    for j in range(101):
-        np.append(z0, init_tambor[i,j])
-lado_X, lado_Y, Z_0 = np.meshgrid(x0, y0, z0)
+ladox, ladoy = np.meshgrid(x0, y0)
 fig = plt.figure()
 ax = fig.gca(projection='3d')
-ax.plot_surface(lado_X, lado_Y, Z_0, color='blue')
+ax.plot_surface(ladox, ladoy, init_tambor, color='blue')
 ax.set_xlabel('Lado X (m)')
 ax.set_ylabel('Lado Y (m)')
 ax.set_zlabel('Amplitud (m)')
 plt.title("Condición inicial del tambor")
+plt.savefig("Tambor_init.png")
+
+prueba = np.genfromtxt("prueba.dat")
+z_final = np.reshape(prueba, (101,101))
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+ax.plot_surface(ladox, ladoy, z_final, color='blue')
 plt.show()
-#plt.savefig("Tambor_init.png")
