@@ -127,15 +127,15 @@ int main(void){
     //vamos a llenar las fronteras de la membrana que se mantendrán fijas
     for (i = 0; i < N; i++){
       for (j = 0; j < N; j++){
-        int pos = i + N*j //como tenemos un gran array en vez de una matriz, hacemos este cambio de variable
+        int pos = i + N*j; //como tenemos un gran array en vez de una matriz, hacemos este cambio de variable
         if (i == 0 || i == N-1 || j == 0 || j == N-1){ //
           u_new[pos] = u_ini[pos];
         }
       }
     }
-    
 
 
+    //HELLOOOO
 
 
 
