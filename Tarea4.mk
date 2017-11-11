@@ -1,14 +1,14 @@
-Resultados_hw4.pdf: plots_guitarrafija.pdf plots_cuerdasuelta.pdf
+Resultados_hw4.pdf: *.png
 	pdflatex Resultados_hw4.tex
 
-plots_guitarrafija.pdf plots_cuerdasuelta.pdf sonido.wav: datos.dat
+*.png *.wav: datos.dat amplitudes.dat plots.py
 	python plots.py
 
-datos.dat:compila
+datos.dat:a.out
 	./a.out > amplitudes.dat
 
-compila: Ondas.c
+a.out: Ondas.c
 	gcc Ondas.c -lm
 
 clean:
-	rm -f sonido.wav amplitudes.dat datos.dat a.out plots_guitarrafija.pdf plots_cuerdasuelta.pdf Resultados_hw4.pdf Resultados_hw4.aux Resultados_hw4.log
+	rm -f *.wav *.dat a.out *.png *.pdf *.aux *.log
