@@ -38,3 +38,5 @@ plt.plot(x, tcuartos2, label="$t=T/4$")
 plt.plot(x, tmedios2, label="$t=T/2$")
 plt.legend(loc=2)
 plt.savefig("plots_cuerdasuelta.pdf")
+
+#HOLI estoy cansada
