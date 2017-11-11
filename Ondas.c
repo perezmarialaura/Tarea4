@@ -105,11 +105,13 @@ int main(void){
       fprintf(results, "%f %f %f %f %f %f \n", toctavos1[i], toctavos2[i], tcuartos1[i], tcuartos2[i], tmedios1[i], tmedios2[i]);
     }
     fclose(results);
-    //e imprimo las amplitudes de la parte media
-    //for (j = 0; j < nt-2; j++){
-      //printf("%f \n", amplitudes[j]);
-    //}
-    //-------------------------------------------------
+    //y guardo las amplitudes de la parte media
+    FILE *amps =fopen("amplitudes.dat", "w");
+    for (j = 0; j < nt-2; j++){
+      fprintf(amps, "%f \n", amplitudes[j]);
+    }
+    fclose(amps);
+  //-------------------------------------------------
     //TAMBOR 2D
     //conservamos los valores de nt, dt, dx y r
     int N = 101; //cambiamos N al ser la matriz de NxN
@@ -147,7 +149,7 @@ int main(void){
     }
     //itero en tiempo
     int k;
-    for(k = 1; k < nt-1; k++){
+    for(k = 1; k < 1136; k++){
       for (i = 1; i < N-1; i++){
         for (j = 1; j < N-1; j++){
           u_new[i+N*j] = 2*u[i+N*j]*(1-2*pow(r,2))-u_old[i+N*j] + pow(r,2)*(u[i+1+N*j] + u[i-1+N*j] + u[i+N*(j+1)] + u[i+N*(j-1)]);
@@ -159,18 +161,30 @@ int main(void){
         u_old[w] = u[w];
         u[w] = u_new[w];
       }
-      //printf("%f %d \n", u_new[5100], k); //y hallo una oscilación entera cuando j=
+      //if (u_new[5100] > 0.009){ esta es la amplitud máxima inicial, buscaremos cuando se repite aproximadamente
+        //printf("%f %d \n", u_new[5100], k); //se repite más o menos en la 2270
+      //}
+      if (k == 284){
+        for(i = 0; i < N*N; i++){
+          toctavos3[i] = u_new[i];
+        }
+      }
+      if (k == 568){
+        for(i = 0; i < N*N; i++){
+          tcuartos3[i] = u_new[i];
+        }
+      }
+      if (k == 1135){
+        for(i = 0; i < N*N; i++){
+          tmedios3[i] = u_new[i];
+        }
+      }
     }
-    for(i = 0; i< N*N; i++){
-      printf("%f \n", u_new[i]);
+    FILE *results2 =fopen("datos2.dat", "w");
+    for (i = 0; i < N*N; i++){
+      fprintf(results2, "%f %f %f \n", toctavos3[i], tcuartos3[i], tmedios3[i]);
     }
-
-
-
-
-
-
-
-
-    return 0;
+    fclose(results2);
+    
+  return 0;
 }

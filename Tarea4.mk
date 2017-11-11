@@ -5,10 +5,10 @@ Resultados_hw4.pdf: *.png
 	python plots.py
 
 datos.dat:a.out
-	./a.out > amplitudes.dat
+	./a.out
 
 a.out: Ondas.c
 	gcc Ondas.c -lm
 
 clean:
-	rm -f *.wav *.dat a.out *.png *.pdf *.aux *.log
+	rm -f *.wav amplitudes.dat datos.dat datos2.dat a.out *.png *.pdf *.aux *.log
