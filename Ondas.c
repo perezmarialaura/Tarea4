@@ -161,20 +161,20 @@ int main(void){
         u_old[w] = u[w];
         u[w] = u_new[w];
       }
-      //if (u_new[5100] > 0.009){ esta es la amplitud máxima inicial, buscaremos cuando se repite aproximadamente
-        //printf("%f %d \n", u_new[5100], k); //se repite más o menos en la 2270
+        //printf("%f %d \n", u_new[5100], k); //busco cuando el punto central vuelve a ser máximo positivo
+        // ocurre en la iteración 256
       //}
-      if (k == 284){
+      if (k == 32){
         for(i = 0; i < N*N; i++){
           toctavos3[i] = u_new[i];
         }
       }
-      if (k == 568){
+      if (k == 64){
         for(i = 0; i < N*N; i++){
           tcuartos3[i] = u_new[i];
         }
       }
-      if (k == 1135){
+      if (k == 128){
         for(i = 0; i < N*N; i++){
           tmedios3[i] = u_new[i];
         }
@@ -185,6 +185,5 @@ int main(void){
       fprintf(results2, "%f %f %f \n", toctavos3[i], tcuartos3[i], tmedios3[i]);
     }
     fclose(results2);
-    
   return 0;
 }
